@@ -29,7 +29,7 @@ settings:
   -
     id: mn-flat
     title: Flat surfaces
-    description: Remove glows and corner brackets
+    description: Remove glows, corner brackets and the tab ruler
     type: class-toggle
   -
     id: mn-tab-numbers
@@ -897,6 +897,14 @@ mark,
 
 .callout .callout-icon,
 .callout .callout-fold {
+  --icon-color: var(--mn-co-ink);
+  color: var(--mn-co-ink);
+}
+
+/* The icon image sits inside the wrapper and can take its own color from
+   Obsidian, so set it directly as well. */
+.callout .callout-icon .svg-icon,
+.callout .callout-fold .svg-icon {
   color: var(--mn-co-ink);
 }
 
@@ -980,8 +988,12 @@ mark,
   color: var(--mn-faint);
 }
 
-/* ---- Properties: corner brackets, like the code well ------------------- */
+/* ---- Properties: corner brackets, like the code well -------------------
+   The padding keeps the title and the rows clear of the ten-pixel bracket
+   arms and the frame edge. ------------------------------------------------ */
 .metadata-container {
+  box-sizing: border-box;
+  padding: var(--size-4-3) var(--size-4-4);
   background: var(--mn-brk), var(--metadata-background);
 }
 
