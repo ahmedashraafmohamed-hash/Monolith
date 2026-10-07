@@ -985,6 +985,16 @@ mark,
   background: var(--mn-brk), var(--metadata-background);
 }
 
+/* On phones Obsidian wraps the property rows in a rounded grey card that
+   reaches past the bracket frame on both sides. Flatten it so the rows sit
+   inside the frame, square and unfilled like the rest of the theme. */
+body.is-mobile .metadata-container :is(.metadata-content, .metadata-properties) {
+  margin-inline: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
 /* ==========================================================================
    4. FRAME
    The app around the note: tabs, sidebars, status bar, dialogs.
