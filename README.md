@@ -1,53 +1,79 @@
 # Monolith
 
-> A minimal black-and-white Obsidian theme built around structure, contrast, and a single ice-blue accent.
+A minimal black-and-white Obsidian theme with a single ice-blue accent.
 
-![Monolith](./screenshots/hero.png)
+Monolith cuts visual noise and keeps the hierarchy. Fine rules, square corners, and layered greys give writing, reading, and organizing a clear structure.
 
-Monolith is designed to reduce visual noise without reducing hierarchy. Fine rules, square corners, and carefully layered greys create a structured interface for writing, reading, and organizing information.
+![Monolith in dark mode](screenshots/Hero%20Dark.png)
 
-## Why Monolith?
+![Monolith in light mode](screenshots/Hero%20White.png)
 
-- **Minimal** — a restrained monochrome palette keeps the interface quiet.
-- **Structured** — typography, spacing, rules, and contrast create clear hierarchy.
-- **Focused** — ice blue is reserved for active and interactive elements.
-- **Consistent** — the same visual language carries through the interface.
+## Features
 
-  
-Features
-Dark and light. A near-black dark theme and a paper-and-ink light theme.
-A ladder of greys. Each heading level, bold, italic, link and equation has its own shade, size and weight.
-One accent. Ice blue marks what is active or interactive. It stays quiet at rest and warms on hover.
-Quiet details. Corner brackets frame code, equations and properties. A ruler runs along the tab strip. H3 to H6 each carry a different marker shape.
-Comfortable to read. Softened contrast, generous line height and a 700px line length.
-Right-to-left aware. Heading rules and markers mirror for Arabic and other right-to-left text.
-Works offline. The fonts are bundled inside the theme.
-Install
-Open Settings, then Appearance.
-Under Themes, open the community theme browser and search for Monolith.
-Install the theme and select it.
-To install by hand, copy manifest.json and theme.css into <your vault>/.obsidian/themes/Monolith/, then choose Monolith under Appearance. The folder name must match the theme name.
+- **Dark and light.** A near-black dark theme and a paper-and-ink light theme.
+- **A ladder of greys.** Each heading level, bold, italic, link, and equation has its own shade, size, and weight.
+- **One accent.** Ice blue marks what is active or interactive. It stays quiet at rest and warms on hover.
+- **Quiet details.** Corner brackets frame code, equations, and properties. A ruler runs along the tab strip. H3 to H6 each carry a different marker shape.
+- **Comfortable to read.** Softened contrast, generous line height, and a 700px line length.
+- **Right-to-left aware.** Heading rules and markers mirror for Arabic and other right-to-left text.
+- **Works offline.** The fonts are bundled inside the theme.
+
+## A closer look
+
+### Typography
+
+![Headings, bold, italic, and links](screenshots/Typography.png)
+
+### Callouts
+
+![Callouts](screenshots/Callouts.png)
+
+### Code
+
+![Code blocks](screenshots/Code.png)
+
+### Mathematics
+
+![Equations](screenshots/Mathematics.png)
+
+## Install
 
 Monolith needs Obsidian 1.10.6 or newer.
 
-Customize
-Choose the accent color, text size and fonts under Settings, Appearance. Monolith follows your choices.
+1. Open **Settings**, then **Appearance**.
+2. Under **Themes**, open the community theme browser and search for **Monolith**.
+3. Install the theme and select it.
+
+To install by hand, copy `manifest.json` and `theme.css` into `.obsidian/themes/Monolith/` inside your vault, then choose Monolith under Appearance. The folder name must match the theme name.
+
+## Customize
+
+Choose the accent color, text size, and fonts under **Settings**, then **Appearance**. Monolith follows your choices.
 
 The optional Style Settings plugin adds five more options:
 
-Option	What it does
-Plain headings	Removes heading rules and markers
-Flat surfaces	Removes glows, corner brackets and the tab ruler
-Numbered tabs	Prefixes tabs with 01 /, 02 / and so on
-Readable line width	Sets the width of a note
-Accent strength	Scales the accent tints from 0 to 1
-Without the plugin, a CSS snippet does the same job. For example, body { --mn-accent-k: 0.6; } softens the accent.
+| Option | What it does |
+| --- | --- |
+| Plain headings | Removes heading rules and markers |
+| Flat surfaces | Removes glows, corner brackets, and the tab ruler |
+| Numbered tabs | Prefixes tabs with 01 /, 02 / and so on |
+| Readable line width | Sets the width of a note |
+| Accent strength | Scales the accent tints from 0 to 1 |
 
-Sample note
-showcase/Monolith Showcase.md uses every element the theme styles: headings, lists, tasks, tables, code, math, callouts and right-to-left text. Copy it into a vault to see Monolith at work.
+Without the plugin, a CSS snippet does the same job. For example, this softens the accent:
 
-Design notes
-The full grey ladder, contrast ratios and the reasoning behind the accent are in docs/design-notes.md.
+```css
+body { --mn-accent-k: 0.6; }
+```
 
-Credits and license
-Monolith is released under the MIT license. It bundles two typefaces under the SIL Open Font License 1.1: Jost and IBM Plex Mono. See THIRD-PARTY-NOTICES.txt.
+## Sample note
+
+[showcase/Monolith Showcase.md](showcase/Monolith%20Showcase.md) uses every element the theme styles: headings, lists, tasks, tables, code, math, callouts, and right-to-left text. Copy it into a vault to see Monolith at work.
+
+## Design notes
+
+[docs/design-notes.md](docs/design-notes.md) covers the full grey ladder, the contrast ratios, and the reasoning behind the accent.
+
+## Credits and license
+
+Monolith is released under the MIT license. It bundles two typefaces under the SIL Open Font License 1.1: Jost and IBM Plex Mono. See [THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt).
