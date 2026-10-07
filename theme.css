@@ -1056,10 +1056,23 @@ button.mod-cta {
   color: var(--mn-on-accent);
 }
 
+/* The dialog rule above is more specific than a bare button.mod-cta, so it
+   used to win and paint the primary button with the grey key gradient while
+   the label kept its on-accent color: white on near-white in light mode,
+   near-black on dark grey in dark mode. These selectors match its weight and
+   come later, so the accent fill and the label color apply together. */
+:is(.modal, .setting-item) button.mod-cta:not(.clickable-icon),
 button.mod-cta {
   border-color: var(--color-accent);
   background: var(--color-accent);
   color: var(--mn-on-accent);
+}
+
+/* Same cause, same fix for destructive buttons (Delete, Uninstall, Remove). */
+:is(.modal, .setting-item) button.mod-warning:not(.clickable-icon) {
+  border-color: var(--background-modifier-error, #c0392b);
+  background: var(--background-modifier-error, #c0392b);
+  color: var(--text-on-accent);
 }
 
 :is(.modal, .setting-item) button:not(.clickable-icon):active,
