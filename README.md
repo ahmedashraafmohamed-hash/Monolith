@@ -76,4 +76,4 @@ body { --mn-accent-k: 0.6; }
 
 ## Credits and license
 
-Monolith is released under the MIT license. It bundles two typefaces under the SIL Open Font License 1.1: Jost and IBM Plex Mono. See [THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt).
+Monolith is released under the MIT license. It bundles two typefaces under the SIL Open Font License 1.1: Jost and IBM Plex Mono. The code colors adapt the [Houston theme for Visual Studio Code](https://github.com/withastro/houston-vscode), released under the MIT license by The Astro Technology Company. See [THIRD-PARTY-NOTICES.txt](THIRD-PARTY-NOTICES.txt).

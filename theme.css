@@ -78,7 +78,7 @@ settings:
   --mn-bg-2: #171717;
   --mn-bg-3: #222;
   --mn-bg-4: #2c2c2c;
-  --mn-well: #050505;
+  --mn-well: #0a0a0a;
   --mn-line: #2a2a2a;
   --mn-line-strong: #444;
   --mn-line-hi: #707070;
@@ -111,16 +111,20 @@ settings:
   --mn-tick: rgb(255 255 255 / 9%);
   --mn-tick-major: rgb(255 255 255 / 20%);
 
-  /* Syntax: grey by value, accent for functions only. */
-  --mn-code-keyword: #fff;
-  --mn-code-value: #e5e5e5;
-  --mn-code-string: #d0d0d0;
-  --mn-code-normal: #c4c4c4;
-  --mn-code-property: #b8b8b8;
-  --mn-code-tag: #adadad;
-  --mn-code-operator: #919191;
-  --mn-code-punct: #7c7c7c;
-  --mn-code-comment: #7c7c7c;
+  /* Syntax: the colors of the Houston theme for Visual Studio Code (MIT, The
+     Astro Technology Company). See THIRD-PARTY-NOTICES.txt. Every color clears
+     9:1 on the code well, and comments sit near 6:1. */
+  --mn-code-keyword: #54b9ff;
+  --mn-code-function: #00daef;
+  --mn-code-value: #ffd493;
+  --mn-code-string: #ffd493;
+  --mn-code-normal: #eef0f9;
+  --mn-code-property: #4bf3c8;
+  --mn-code-tag: #54b9ff;
+  --mn-code-type: #acafff;
+  --mn-code-operator: #eef0f9;
+  --mn-code-punct: #eef0f9;
+  --mn-code-comment: #eef0f98f;
 
   /* Obsidian's base scale, dark to light. */
   --color-base-00: #0e0e0e;
@@ -162,7 +166,7 @@ settings:
   --mn-link: #181818;
   --mn-link-ext: #181818;
   --mn-link-miss: #666;
-  --mn-math: #242424;
+  --mn-math: #050505;
   --mn-italic: #353535;
   --mn-body: #474747;
   --mn-quote: #565656;
@@ -178,15 +182,19 @@ settings:
   --mn-grid: rgb(0 0 0 / 5%);
   --mn-tick: rgb(0 0 0 / 10%);
   --mn-tick-major: rgb(0 0 0 / 22%);
-  --mn-code-keyword: #000;
-  --mn-code-value: #1d1d1d;
-  --mn-code-string: #353535;
-  --mn-code-normal: #3e3e3e;
-  --mn-code-property: #4a4a4a;
-  --mn-code-tag: #565656;
-  --mn-code-operator: #585858;
-  --mn-code-punct: #666;
-  --mn-code-comment: #666;
+  /* Syntax: Houston's hues at a lower lightness, each at least 5.0:1 on the
+     well. Houston is a dark theme, so these are Monolith's own light versions. */
+  --mn-code-keyword: #0369a0;
+  --mn-code-function: #036d78;
+  --mn-code-value: #815b16;
+  --mn-code-string: #815b16;
+  --mn-code-normal: #262a35;
+  --mn-code-property: #00725a;
+  --mn-code-tag: #0369a0;
+  --mn-code-type: #5c5ca5;
+  --mn-code-operator: #262a35;
+  --mn-code-punct: #262a35;
+  --mn-code-comment: #62646c;
   --color-base-00: #f4f4f4;
   --color-base-05: #f1f1f1;
   --color-base-10: #eee;
@@ -439,8 +447,8 @@ body {
   --code-background: var(--mn-well);
   --code-normal: var(--mn-code-normal);
   --code-comment: var(--mn-code-comment);
-  --code-function: var(--mn-tint-text);
-  --code-important: var(--mn-tint-text);
+  --code-function: var(--mn-code-function);
+  --code-important: var(--mn-code-type);
   --code-keyword: var(--mn-code-keyword);
   --code-operator: var(--mn-code-operator);
   --code-property: var(--mn-code-property);
@@ -782,6 +790,21 @@ del,
   color: var(--mn-math);
 }
 
+/* In light mode something outside this file paints rendered equations a flat
+   #999999, so the plain rule above loses. !important wins. The :not() leaves
+   \color{...} inside an equation alone, and headings keep their own color. */
+.math,
+.math mjx-container,
+.math mjx-container :not([style*="color"], [style*="color"] *) {
+  color: var(--mn-math) !important;
+}
+
+:is(h1, h2, h3, h4, h5, h6, [class~="HyperMD-header"], .cm-header) .math,
+:is(h1, h2, h3, h4, h5, h6, [class~="HyperMD-header"], .cm-header) .math mjx-container,
+:is(h1, h2, h3, h4, h5, h6, [class~="HyperMD-header"], .cm-header) .math mjx-container :not([style*="color"], [style*="color"] *) {
+  color: inherit !important;
+}
+
 :is(h1, h2, h3, h4, h5, h6, [class~="HyperMD-header"], .cm-header) .math {
   color: inherit;
 }
@@ -791,11 +814,11 @@ del,
   padding: 0.9em 1em;
   overflow-x: auto;
   border: 1px solid var(--mn-line);
-  background: var(--mn-brk-acc), var(--mn-sheen), var(--mn-well);
+  background: var(--mn-brk-acc), var(--mn-well);
 }
 
 .math.math-block:hover {
-  background: var(--mn-brk-acc-hover), var(--mn-sheen), var(--mn-well);
+  background: var(--mn-brk-acc-hover), var(--mn-well);
 }
 
 /* ---- Highlight ==like this== -------------------------------------------- */
@@ -858,6 +881,12 @@ mark,
 .is-live-preview [class~="HyperMD-codeblock-end"] {
   border-bottom: 1px solid var(--mn-line);
   background: var(--mn-brk-bottom), var(--code-background);
+}
+
+/* Comments lean, as in Houston. Code blocks only. */
+.markdown-rendered pre .token.comment,
+[class~="HyperMD-codeblock"] .cm-comment {
+  font-style: italic;
 }
 
 .code-block-flair {
