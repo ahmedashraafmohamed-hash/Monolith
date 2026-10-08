@@ -32,6 +32,9 @@ The sponsor summed up the brief in one sentence:
 2. The content team publishes without developer help
 3. Support requests about navigation drop by half
 
+> [!info] Scope
+> Blog archives and the support site are out of scope for this phase.
+
 #### Performance
 
 Page weight is checked on every build with `npm run build`, and the results go to the project channel.
@@ -53,6 +56,9 @@ $$
 $$
 
 With four people working 30 hours a week at $f = 0.6$, capacity is $C = 72$ hours. The 264 hours below take about 3.7 weeks.
+
+> [!example] Worked example
+> One designer at 30 hours a week and $f = 0.6$ has 18 hours of capacity.
 
 | Phase | Owner | Estimate | Status |
 | --- | --- | --- | --- |
@@ -89,6 +95,9 @@ print(round(weeks_needed(264, 4, 30, 0.6), 1))  # 3.7
 > [!question] Open question
 > Who approves the final copy: marketing or the product owner?
 
+> [!success] Done
+> The content audit is complete and every page has an owner.
+
 ---
 
 ## Risks
@@ -99,11 +108,23 @@ print(round(weeks_needed(264, 4, 30, 0.6), 1))  # 3.7
 > [!danger] Blocker
 > The domain registration expires on 20 November, before the planned launch. Renew it now.
 
+> [!failure] Missed target
+> The first staging build failed the two-second load test.
+
+> [!bug] Known issue
+> The navigation menu stays open on a phone after the screen rotates.
+
 > [!tip] Before launch
 > Share the staging link with a few people outside the team to catch problems the team no longer notices.
 
 > [!quote] Customer feedback
 > I could not find the pricing page on my phone.
+
+> [!faq]- Why not launch in November?
+> The audit found 40 pages that needed rewriting, and the content team could not finish them before the original date.
+>
+> > [!note] Decision
+> > The sponsor approved the move to 3 December.
 
 ## ملخص بالعربية
 
