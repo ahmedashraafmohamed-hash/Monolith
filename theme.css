@@ -55,6 +55,15 @@ settings:
     min: 0
     max: 1
     step: 0.05
+  -
+    id: mn-callout-k
+    title: Callout color
+    description: How much hue shows in callout edges, icons and titles. 0 is the plain grey ladder.
+    type: variable-number-slider
+    default: 1
+    min: 0
+    max: 1
+    step: 0.05
 
 */
 
@@ -106,7 +115,6 @@ settings:
   --mn-hard: rgb(255 255 255 / 9%);
   --mn-sheen: linear-gradient(180deg, rgb(255 255 255 / 4.5%), transparent 120px);
   --mn-strip: linear-gradient(180deg, rgb(255 255 255 / 8%), transparent);
-  --mn-hatch: repeating-linear-gradient(135deg, rgb(255 255 255 / 5%) 0 1px, transparent 1px 9px);
   --mn-grid: rgb(255 255 255 / 5%);
   --mn-tick: rgb(255 255 255 / 9%);
   --mn-tick-major: rgb(255 255 255 / 20%);
@@ -125,6 +133,15 @@ settings:
   --mn-code-operator: #eef0f9;
   --mn-code-punct: #eef0f9;
   --mn-code-comment: #eef0f98f;
+
+  /* Callout hues. Every type shares these lightnesses and chromas and only the
+     hue angle changes, so no type is louder than another. Ink is the title
+     text and icon; edge is the 3px rule. Section 3 sets the hue per type. */
+  --mn-co-l: 0.8;
+  --mn-co-c: 0.055;
+  --mn-co-edge-l: 0.68;
+  --mn-co-edge-c: 0.085;
+  --mn-hatch-line: rgb(255 255 255 / 5%);
 
   /* Obsidian's base scale, dark to light. */
   --color-base-00: #0e0e0e;
@@ -178,7 +195,6 @@ settings:
   --mn-hard: rgb(0 0 0 / 12%);
   --mn-sheen: linear-gradient(180deg, rgb(255 255 255 / 70%), transparent 120px);
   --mn-strip: linear-gradient(180deg, rgb(255 255 255 / 70%), transparent);
-  --mn-hatch: repeating-linear-gradient(135deg, rgb(0 0 0 / 5%) 0 1px, transparent 1px 9px);
   --mn-grid: rgb(0 0 0 / 5%);
   --mn-tick: rgb(0 0 0 / 10%);
   --mn-tick-major: rgb(0 0 0 / 22%);
@@ -195,6 +211,13 @@ settings:
   --mn-code-operator: #262a35;
   --mn-code-punct: #262a35;
   --mn-code-comment: #62646c;
+  /* Callout hues, light mode. Darker and a little stronger so they hold up on
+     paper. Chroma stays inside sRGB for every hue. */
+  --mn-co-l: 0.4;
+  --mn-co-c: 0.065;
+  --mn-co-edge-l: 0.56;
+  --mn-co-edge-c: 0.09;
+  --mn-hatch-line: rgb(0 0 0 / 5%);
   --color-base-00: #f4f4f4;
   --color-base-05: #f1f1f1;
   --color-base-10: #eee;
@@ -225,6 +248,7 @@ body {
   --line-height-normal: 1.65;
   --file-line-width: 700px;
   --mn-accent-k: 1;
+  --mn-callout-k: 1;
   --mn-dir: 90deg;
 
   /* Square everything. */
@@ -493,7 +517,8 @@ body {
   --table-row-alt-background: transparent;
   --table-column-alt-background: transparent;
 
-  /* Callouts: shape and rule carry the meaning (see section 3). */
+  /* Callouts: shape and rule carry the meaning, a quiet hue backs them up
+     (see section 3). */
   --callout-title-color: var(--mn-h3);
   --callout-content-background: transparent;
 
@@ -555,6 +580,7 @@ body {
 
 /* Flat mode removes the brackets and the glow. */
 body.mn-flat {
+  --mn-accent-glow: transparent;
   --mn-glow: 0 0 0 0 transparent;
   --mn-brk-top: none;
   --mn-brk-bottom: none;
@@ -897,16 +923,36 @@ mark,
 }
 
 /* ---- Callouts ----------------------------------------------------------
-   No hue. Identity comes from the icon, the edge and the line style:
+   Shape and rule carry the meaning, and a quiet hue backs them up:
      solid edge     informational
-     accent edge    worth keeping (tip, important, success)
+     accent edge    worth keeping (tip, important)
      dashed         open, optional or unfinished (question, todo)
      hatched        take care (warning, danger, bug, failure)
+   The hue is a second cue, never the only one. A type changes only its hue
+   angle (--mn-co-h) and how much of the mode's chroma it takes (--mn-co-q).
+   Lightness and chroma come from section 1, so the types stay level with one
+   another. Notes, info and todos sit almost on grey and quotes have no hue.
+   The Callout color slider in Style Settings scales the hue, and at 0 every
+   callout is back on the grey ladder.
    Every property is set directly so the result does not depend on how a
    given Obsidian version turns --callout-color into a fill. */
 .callout {
-  --mn-co-ink: var(--mn-h3);
-  --mn-co-edge: var(--mn-line-hi);
+  /* A type below changes these four and nothing else. Slate is the default,
+     so note, info, todo and any custom type start there. */
+  --mn-co-h: 255;
+  --mn-co-q: 0.45;
+  --mn-co-grey: var(--mn-h3);
+  --mn-co-edge-grey: var(--mn-line-hi);
+
+  /* Ink is the title text and icon. Edge is the 3px rule. Each blends its hue
+     into the grey by the Callout color slider, as the accent tints do. */
+  --mn-co-ink-hue: oklch(var(--mn-co-l) calc(var(--mn-co-c) * var(--mn-co-q)) var(--mn-co-h));
+  --mn-co-edge-hue: oklch(var(--mn-co-edge-l) calc(var(--mn-co-edge-c) * var(--mn-co-q)) var(--mn-co-h));
+  --mn-co-ink: color-mix(in oklch, var(--mn-co-ink-hue) calc(100% * var(--mn-callout-k)), var(--mn-co-grey));
+  --mn-co-edge: color-mix(in oklch, var(--mn-co-edge-hue) calc(100% * var(--mn-callout-k)), var(--mn-co-edge-grey));
+  --mn-co-bar: color-mix(in oklch, var(--mn-co-edge-hue) calc(9% * var(--mn-callout-k)), var(--mn-bg-2));
+  --mn-co-glow: color-mix(in oklch, color-mix(in oklch, var(--mn-co-edge-hue) 35%, transparent) calc(100% * var(--mn-callout-k)), var(--mn-accent-glow));
+  --mn-co-hatch: color-mix(in oklch, var(--mn-co-edge-hue) calc(6% * var(--mn-callout-k)), var(--mn-hatch-line));
 
   overflow: hidden;
   border: 1px solid var(--mn-line-strong);
@@ -918,7 +964,7 @@ mark,
 .callout .callout-title {
   --callout-title-color: var(--mn-co-ink);
 
-  background: var(--mn-bg-2);
+  background: var(--mn-co-bar);
   font-family: var(--mn-font-mono);
   letter-spacing: 0.03em;
   color: var(--mn-co-ink);
@@ -941,36 +987,72 @@ mark,
   color: var(--mn-body);
 }
 
+/* Info: slate like a note, one step brighter in grey. */
+.callout[data-callout="info"] {
+  --mn-co-grey: var(--mn-h2);
+  --mn-co-edge-grey: var(--mn-h4);
+}
+
+/* Summary: cyan. */
+.callout[data-callout="summary"],
+.callout[data-callout="abstract"],
+.callout[data-callout="tldr"] {
+  --mn-co-h: 205;
+  --mn-co-q: 1;
+  --mn-co-grey: var(--mn-h2);
+  --mn-co-edge-grey: var(--mn-h4);
+}
+
+/* Tip: the accent. It follows Settings, Appearance, Accent color and the
+   Accent strength slider, and keeps its glow. */
 .callout[data-callout="tip"],
 .callout[data-callout="hint"],
-.callout[data-callout="important"],
+.callout[data-callout="important"] {
+  --mn-co-grey: var(--mn-tint-text);
+  --mn-co-edge-grey: var(--mn-tint-line);
+  --mn-co-ink-hue: color-mix(in oklch, var(--color-accent) calc(70% * var(--mn-accent-k)), var(--mn-h3));
+  --mn-co-edge-hue: color-mix(in oklch, var(--color-accent) calc(75% * var(--mn-accent-k)), var(--mn-line-hi));
+
+  box-shadow: inset 0 0 24px -10px var(--mn-co-glow);
+}
+
+/* Success: green, with the same glow as a tip. */
 .callout[data-callout="success"],
 .callout[data-callout="check"],
 .callout[data-callout="done"] {
-  --mn-co-ink: var(--mn-tint-text);
-  --mn-co-edge: var(--mn-tint-line);
+  --mn-co-h: 158;
+  --mn-co-q: 1;
+  --mn-co-grey: var(--mn-tint-text);
+  --mn-co-edge-grey: var(--mn-tint-line);
 
-  box-shadow: inset 0 0 24px -10px var(--mn-accent-glow);
+  box-shadow: inset 0 0 24px -10px var(--mn-co-glow);
 }
 
-.callout[data-callout="summary"],
-.callout[data-callout="abstract"],
-.callout[data-callout="tldr"],
-.callout[data-callout="info"] {
-  --mn-co-ink: var(--mn-h2);
-  --mn-co-edge: var(--mn-h4);
+/* Question: violet, dashed. Todo stays slate and is dashed too. */
+.callout[data-callout="question"],
+.callout[data-callout="help"],
+.callout[data-callout="faq"] {
+  --mn-co-h: 290;
+  --mn-co-q: 1;
 }
 
 .callout[data-callout="question"],
 .callout[data-callout="help"],
 .callout[data-callout="faq"],
 .callout[data-callout="todo"] {
-  --mn-co-ink: var(--mn-h4);
+  --mn-co-grey: var(--mn-h4);
 
   border-style: dashed;
   border-inline-start-style: dashed;
 }
 
+/* Example: orchid. */
+.callout[data-callout="example"] {
+  --mn-co-h: 335;
+  --mn-co-q: 1;
+}
+
+/* Take care: hatched, and the brightest greys when color is off. */
 .callout[data-callout="warning"],
 .callout[data-callout="caution"],
 .callout[data-callout="attention"],
@@ -980,28 +1062,53 @@ mark,
 .callout[data-callout="fail"],
 .callout[data-callout="failure"],
 .callout[data-callout="missing"] {
-  --mn-co-ink: var(--mn-bold);
-  --mn-co-edge: var(--mn-bold);
+  --mn-co-q: 1;
+  --mn-co-grey: var(--mn-bold);
+  --mn-co-edge-grey: var(--mn-bold);
 
-  background: var(--mn-hatch), var(--mn-well);
+  background: repeating-linear-gradient(135deg, var(--mn-co-hatch) 0 1px, transparent 1px 9px), var(--mn-well);
 }
 
 .callout[data-callout="warning"],
 .callout[data-callout="caution"],
 .callout[data-callout="attention"] {
+  --mn-co-h: 80;
+
   border-style: dashed;
   border-inline-start-style: solid;
 }
 
+.callout[data-callout="fail"],
+.callout[data-callout="failure"],
+.callout[data-callout="missing"] {
+  --mn-co-h: 45;
+}
+
+.callout[data-callout="danger"],
+.callout[data-callout="error"] {
+  --mn-co-h: 25;
+}
+
+.callout[data-callout="bug"] {
+  --mn-co-h: 355;
+}
+
+/* Quote: no hue at all. */
 .callout[data-callout="quote"],
 .callout[data-callout="cite"] {
   --mn-co-ink: var(--mn-quote);
   --mn-co-edge: var(--mn-line-strong);
+  --mn-co-bar: var(--mn-bg-2);
 }
 
 .callout[data-callout="quote"] .callout-content,
 .callout[data-callout="cite"] .callout-content {
   color: var(--mn-quote);
+}
+
+/* Flat surfaces: no callout glow either. */
+body.mn-flat .callout {
+  box-shadow: none;
 }
 
 /* ---- Tables ------------------------------------------------------------ */

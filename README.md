@@ -13,6 +13,7 @@ Monolith cuts visual noise and keeps the hierarchy. Fine rules, square corners, 
 - **Dark and light.** A near-black dark theme and a paper-and-ink light theme.
 - **A ladder of greys.** Each heading level, bold, italic, link, and equation has its own shade, size, and weight.
 - **One accent.** Ice blue marks what is active or interactive. It stays quiet at rest and warms on hover.
+- **Quiet callout colors.** Callouts take a faint hue on the edge, icon and title, and keep their shapes: solid, dashed or hatched. One slider turns the color back to grey.
 - **Quiet details.** Corner brackets frame code, equations, and properties. A ruler runs along the tab strip. H3 to H6 each carry a different marker shape.
 - **Comfortable to read.** Softened contrast, generous line height, and a 700px line length.
 - **Right-to-left aware.** Heading rules and markers mirror for Arabic and other right-to-left text.
@@ -50,7 +51,7 @@ To install by hand, copy `manifest.json` and `theme.css` into `.obsidian/themes/
 
 Choose the accent color, text size, and fonts under **Settings**, then **Appearance**. Monolith follows your choices.
 
-The optional Style Settings plugin adds five more options:
+The optional Style Settings plugin adds six more options:
 
 | Option | What it does |
 | --- | --- |
@@ -59,11 +60,18 @@ The optional Style Settings plugin adds five more options:
 | Numbered tabs | Prefixes tabs with 01 /, 02 / and so on |
 | Readable line width | Sets the width of a note |
 | Accent strength | Scales the accent tints from 0 to 1 |
+| Callout color | Scales the callout hues from 0 to 1 |
 
 Without the plugin, a CSS snippet does the same job. For example, this softens the accent:
 
 ```css
 body { --mn-accent-k: 0.6; }
+```
+
+And this turns callouts back to plain grey:
+
+```css
+body { --mn-callout-k: 0; }
 ```
 
 ## Sample note
