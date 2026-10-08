@@ -18,12 +18,12 @@ Each heading level, bold, italic, link and equation has its own grey. Size, weig
 | Bold | `#ffffff` (19.3:1) | `#000000` (19.1:1) | body | Jost 600 | Brightest text in a paragraph |
 | Link | `#f0f0f0` (16.9:1) | `#181818` (16.1:1) | body | Underline | Softly tinted underline (internal), dotted grey (external) |
 | Link, unresolved | `#8c8c8c` (5.7:1) | `#666666` (5.2:1) | body | Underline | Dashed grey underline |
-| Math | `#e2e2e2` (14.9:1) | `#242424` (14.1:1) | body | Math font | Display math sits in a recessed box with accent corner brackets |
+| Math | `#e2e2e2` (14.9:1) | `#050505` (18.5:1) | body | Math font | Display math sits in a recessed box with accent corner brackets |
 | Italic | `#d2d2d2` (12.8:1) | `#353535` (11.2:1) | body | Jost italic | A true italic, not a slanted upright |
 | Body | `#c2c2c2` (10.8:1) | `#474747` (8.4:1) | body | Jost 400 | Plain text |
 | Quote | `#a8a8a8` (8.1:1) | `#565656` (6.7:1) | body | Jost 400 | Cool grey edge on the left |
 
-Sizes use `em`, so headings follow the text size you set under Settings, Appearance. The numbers in brackets are contrast ratios against the page color (`#0e0e0e` in dark, `#f4f4f4` in light). WCAG success criterion 1.4.3 sets 4.5:1 as the minimum for normal text. Each grey in the table, the muted and faint text greys, the accent and the code colors clear 4.5:1 on every surface they sit on: page, sidebar, frame, code well and callout title bar.
+Sizes use `em`, so headings follow the text size you set under Settings, Appearance. The numbers in brackets are contrast ratios against the page color (`#0e0e0e` in dark, `#f4f4f4` in light). WCAG success criterion 1.4.3 sets 4.5:1 as the minimum for normal text. Each grey in the table, the muted and faint text greys, the accent, the code colors and the callout title colors clear 4.5:1 on every surface they sit on: page, sidebar, frame, code well and callout title bar.
 
 ## The accent
 
@@ -46,6 +46,38 @@ Never: bullets, plain borders, or a heading rule drawn as a bar or a solid accen
 
 To turn the accent up or down, use the **Accent strength** slider in Style Settings. Without that plugin, add a snippet such as `body { --mn-accent-k: 0.6; }`. At 0 the tints go grey. To change the accent color itself, pick one under Settings, Appearance, Accent color. Obsidian documents that setting as an override for the theme's accent, and Monolith reads it everywhere.
 
+## Callout colors
+
+Callouts add a second, quieter cue: a hue on the 3px edge, the icon and the title, and a faint wash on the title bar. Body text stays grey. Every type shares one lightness and one chroma per mode, set in OKLCH, so only the hue angle changes and no type is louder than another.
+
+| Type | Hue | Shape cue |
+|---|---|---|
+| note, info | slate, 255°, at 45% of the chroma | solid edge |
+| todo | slate | dashed outline |
+| summary, abstract, tldr | cyan, 205° | solid edge |
+| tip, hint, important | the accent | accent edge and glow |
+| success, check, done | green, 158° | glow |
+| question, help, faq | violet, 290° | dashed outline |
+| example | orchid, 335° | solid edge |
+| warning, caution, attention | amber, 80° | hatched, dashed outline |
+| failure, fail, missing | coral, 45° | hatched |
+| danger, error | red, 25° | hatched |
+| bug | rose, 355° | hatched |
+| quote, cite | none | cool grey edge |
+
+Custom callout types start from slate. Tip callouts follow the accent, so Settings, Appearance, Accent color and the Accent strength slider both reach them.
+
+|  | Dark | Light |
+|---|---|---|
+| Title and icon | L 0.80, chroma 0.055 | L 0.40, chroma 0.065 |
+| Edge | L 0.68, chroma 0.085 | L 0.56, chroma 0.09 |
+| Title bar wash | 9% of the edge hue | 9% of the edge hue |
+| Hatch lines | 6% of the edge hue | 6% of the edge hue |
+
+Every title color clears 6:1 on its title bar, and every colored edge clears 4:1 against the page, in both modes. The quote edge is a plain grey and stays as it was.
+
+To turn the hue up or down, use the **Callout color** slider in Style Settings. Without that plugin, add a snippet such as `body { --mn-callout-k: 0.6; }`. At 0 the callouts return to the grey ladder of version 1.1.1.
+
 ## Lines and shapes
 
 Small details, kept faint:
@@ -57,7 +89,7 @@ Small details, kept faint:
 - square checkboxes and tags
 - one shape per level for H3 to H6: filled square, outlined triangle, diamond and ring, all the same size
 
-Plain headings and Flat surfaces in Style Settings turn these down.
+Plain headings and Flat surfaces in Style Settings turn these down. Flat surfaces also removes the glow on tips, links and the open tab.
 
 ## Easy on the eyes
 
@@ -69,8 +101,8 @@ Plain headings and Flat surfaces in Style Settings turn these down.
 
 ## Other details
 
-- **Callouts** use no hue. The icon, the edge and the line style carry the type. A dashed outline marks open items. Hatching marks danger.
-- **Code** is grey by value. Functions take a soft accent tint.
+- **Callouts** carry a quiet hue on top of their shapes. The icon, the edge and the line style still carry the type, so color is never the only cue. A dashed outline marks open items. Hatching marks danger. See Callout colors above.
+- **Code** uses the colors of the Houston theme for Visual Studio Code: blue for keywords and tags, cyan for functions, mint for properties, sand for strings and numbers, periwinkle for important tokens. Comments use the text color at 56% and lean. Dark mode takes Houston's values as published. Houston has no light mode, so light mode keeps each hue and chroma and lowers the lightness until the color clears 5.0:1 against the code background.
 - **Tables** get hairlines and a mono header row.
 - **Fonts**: Jost for text and IBM Plex Mono for labels and code. Both load from data URLs inside `theme.css`, so the theme works offline. If you pick your own fonts under Settings, Appearance, those win. Arabic script uses your system's Arabic font.
 - **Links** in reading view use a border for the underline. Live Preview keeps Obsidian's own underline.
