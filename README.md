@@ -4,6 +4,8 @@ A minimal black-and-white Obsidian theme with a single ice-blue accent.
 
 Monolith cuts visual noise and keeps the hierarchy. Fine rules, square corners, and layered greys give writing, reading, and organizing a clear structure.
 
+![Monolith](Hero.png)
+
 ![Monolith in dark mode](screenshots/Hero%20Dark.png)
 
 ![Monolith in light mode](screenshots/Hero%20White.png)
