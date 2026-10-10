@@ -4,7 +4,7 @@ Monolith takes its look from an instrument panel: hairline rules, square corners
 
 ## The grey ladder
 
-Each heading level, bold, italic, link and equation has its own grey. Size, weight, typeface and a small marker back up the grey, so the roles stay distinct where two greys sit close together. Neighboring steps differ by 4.9 to 6.2 points of CIELAB lightness in dark mode and 5.9 to 8.2 in light mode.
+Each heading level, bold, italic, link and equation has its own grey. Size, weight, typeface and a small marker back up the grey, so the roles stay distinct where two greys sit close together. Neighboring heading greys, H1 to H6, differ by 5.8 to 6.2 points of CIELAB lightness in dark mode and 5.9 to 8.2 in light mode.
 
 | Role | Dark | Light | Size | Face | Extra cue |
 |---|---|---|---|---|---|
@@ -12,9 +12,9 @@ Each heading level, bold, italic, link and equation has its own grey. Size, weig
 | Heading 1 | `#f6f6f6` (17.9:1) | `#0e0e0e` (17.6:1) | 1.6em | Jost 300 | Fading hairline with one tick |
 | Heading 2 | `#e5e5e5` (15.3:1) | `#1d1d1d` (15.3:1) | 1.4em | Jost 400 | Hairline that fades out |
 | Heading 3 | `#d4d4d4` (13.0:1) | `#2c2c2c` (12.7:1) | 1.22em | Jost 400 | Filled square marker |
-| Heading 4 | `#c4c4c4` (11.1:1) | `#3e3e3e` (9.7:1) | 0.94em | IBM Plex Mono 500 | Outlined triangle marker |
-| Heading 5 | `#b3b3b3` (9.2:1) | `#505050` (7.3:1) | 0.86em | IBM Plex Mono 500 | Outlined diamond marker |
-| Heading 6 | `#a3a3a3` (7.7:1) | `#5e5e5e` (5.9:1) | 0.78em | IBM Plex Mono 400 | Outlined ring marker |
+| Heading 4 | `#c4c4c4` (11.1:1) | `#3e3e3e` (9.7:1) | 0.94em | IBM Plex Mono | Outlined triangle marker |
+| Heading 5 | `#b3b3b3` (9.2:1) | `#505050` (7.3:1) | 0.86em | IBM Plex Mono | Outlined diamond marker |
+| Heading 6 | `#a3a3a3` (7.7:1) | `#5e5e5e` (5.9:1) | 0.78em | IBM Plex Mono | Outlined ring marker |
 | Bold | `#ffffff` (19.3:1) | `#000000` (19.1:1) | body | Jost 600 | Brightest text in a paragraph |
 | Link | `#f0f0f0` (16.9:1) | `#181818` (16.1:1) | body | Underline | Softly tinted underline (internal), dotted grey (external) |
 | Link, unresolved | `#8c8c8c` (5.7:1) | `#666666` (5.2:1) | body | Underline | Dashed grey underline |
@@ -24,6 +24,8 @@ Each heading level, bold, italic, link and equation has its own grey. Size, weig
 | Quote | `#a8a8a8` (8.1:1) | `#565656` (6.7:1) | body | Jost 400 | Cool grey edge on the left |
 
 Sizes use `em`, so headings follow the text size you set under Settings, Appearance. The numbers in brackets are contrast ratios against the page color (`#0e0e0e` in dark, `#f4f4f4` in light). WCAG success criterion 1.4.3 sets 4.5:1 as the minimum for normal text. Each grey in the table, the muted and faint text greys, the accent, the code colors and the callout title colors clear 4.5:1 on every surface they sit on: page, sidebar, frame, code well and callout title bar.
+
+The mono headings render in IBM Plex Mono Regular, the only weight of that family the theme embeds. The CSS asks for weight 500 on H4, H5, the table header and the callout title, so a Medium face would be picked up if one were added. Until then, size, grey and marker tell the levels apart.
 
 ## The accent
 
@@ -48,7 +50,7 @@ To turn the accent up or down, use the **Accent strength** slider in Style Setti
 
 ## Callout colors
 
-Callouts add a second, quieter cue: a hue on the 3px edge, the icon and the title, and a faint wash on the title bar. Body text stays grey. Every type shares one lightness and one chroma per mode, set in OKLCH, so only the hue angle changes and no type is louder than another.
+Callouts add a second, quieter cue: a hue on the 3px edge, the icon and the title, and a faint wash on the title bar. Body text stays grey. Every type shares one lightness and one chroma per mode, set in OKLCH, so only the hue angle changes and no type is louder than another. The hue is blended into the grey in OKLab, which keeps the same hue on every browser engine (see Compatibility).
 
 | Type | Hue | Shape cue |
 |---|---|---|
@@ -102,11 +104,22 @@ Plain headings and Flat surfaces in Style Settings turn these down. Flat surface
 ## Other details
 
 - **Callouts** carry a quiet hue on top of their shapes. The icon, the edge and the line style still carry the type, so color is never the only cue. A dashed outline marks open items. Hatching marks danger. See Callout colors above.
-- **Code** uses the colors of the Houston theme for Visual Studio Code: blue for keywords and tags, cyan for functions, mint for properties, sand for strings and numbers, periwinkle for important tokens. Comments use the text color at 56% and lean. Dark mode takes Houston's values as published. Houston has no light mode, so light mode keeps each hue and chroma and lowers the lightness until the color clears 5.0:1 against the code background.
+- **Code** uses the colors of the Houston theme for Visual Studio Code: blue for keywords and tags, cyan for functions, mint for properties, sand for strings and numbers, periwinkle for important tokens. Comments use the text color at 56% and lean. The lean is a slanted Regular, because IBM Plex Mono Italic is not embedded. Dark mode takes Houston's values as published. Houston has no light mode, so light mode keeps each hue and chroma and lowers the lightness until the color clears 5.0:1 against the code background.
 - **Tables** get hairlines and a mono header row.
 - **Fonts**: Jost for text and IBM Plex Mono for labels and code. Both load from data URLs inside `theme.css`, so the theme works offline. If you pick your own fonts under Settings, Appearance, those win. Arabic script uses your system's Arabic font.
 - **Links** in reading view use a border for the underline. Live Preview keeps Obsidian's own underline.
-- **Arabic and right-to-left text**: Arabic has no italic, so emphasis there shows by shade, one step brighter than Latin italic. Tracking resets to zero on right-to-left lines, and rules mirror.
+- **Arabic and right-to-left text**: Arabic has no italic, so emphasis there shows by shade, one step brighter than Latin italic. Right-to-left text never gets a synthesized italic or bold, which would slant the letters and break the joins. Latin text is not affected. An Arabic word set in italics inside a left-to-right line can still pick up a slanted fallback. Tracking resets to zero on right-to-left lines, and rules mirror.
+
+## Compatibility
+
+Monolith needs Obsidian 1.10.6 or newer, on an installer with Chromium 120 or newer. Chromium 120 is the first version with both `:dir()`, which the right-to-left rules use, and the unprefixed CSS `mask`, which draws the H3 to H6 markers. `color-mix()` and `oklch()`, which every tint uses, arrived in Chromium 111. Below 120 the right-to-left rules and the markers do not work, and below 111 the tints do not either. Obsidian's app updates itself, but its installer does not, so a vault on an old installer can run a new Obsidian version on an old engine. Update the installer from [obsidian.md/download](https://obsidian.md/download).
+
+Two decisions came out of testing:
+
+- **Mixes run in OKLab.** Chromium before 137 gives a grey a made-up hue when it interpolates OKLCH toward it. With the version 1.2.0 stylesheet, that turned the ice-blue tints purple and the green callouts olive on Chromium 112 to 131. OKLab has no hue to interpolate. At both ends of the sliders, including the defaults, current builds render the same colors as before. Between the ends, the success callout's greys are tinted with the accent, so its mid-slider greens differ slightly (up to 20 of 255 levels).
+- **The sliders stay plain numbers.** The tints scale with `calc(60% * var(--mn-accent-k))`, a percentage times a number. Every Chromium that has `color-mix()` accepts it. Writing the sliders as percentages and nesting `color-mix()` calls gives the same colors and would break snippets such as `--mn-accent-k: 0.6`, so the notation stays.
+
+The test evaluated every color the two sliders drive (13 accent tints, and 5 colors for each of the 13 callout types), in dark and light mode, at slider positions 0, 0.25, 0.5, 0.75 and 1, in headless Chromium 112, 119, 123, 126, 131, 137, 138, 141 and 153. With OKLab, all of them agree to within two levels of 255. With OKLCH, Chromium 112 to 131 differed from 137 and later by up to 64 levels (160 on Chromium 112). `npm run lint` repeats the browser-feature check against Chromium 120.
 
 ## Known gaps
 

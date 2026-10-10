@@ -1,0 +1,20 @@
+{
+  "name": "obsidian-theme-monolith",
+  "private": true,
+  "description": "Development tooling for the Monolith Obsidian theme. The theme itself is theme.css.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "scripts": {
+    "lint": "stylelint theme.css --max-warnings 2",
+    "check:release": "node scripts/check-release.mjs",
+    "check": "npm run lint && npm run check:release"
+  },
+  "devDependencies": {
+    "js-yaml": "5.4.3",
+    "stylelint": "17.16.0",
+    "stylelint-config-recommended": "18.0.0",
+    "stylelint-no-unsupported-browser-features": "8.1.2"
+  }
+}

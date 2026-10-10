@@ -41,7 +41,7 @@ Monolith cuts visual noise and keeps the hierarchy. Fine rules, square corners, 
 
 ## Install
 
-Monolith needs Obsidian 1.10.6 or newer.
+Monolith needs Obsidian 1.10.6 or newer, on an up-to-date installer. The theme uses `color-mix()`, `oklch()`, `:dir()` and CSS masks, which need the Chromium 120 engine or newer. If colors or heading markers look wrong, update the installer from [obsidian.md/download](https://obsidian.md/download).
 
 1. Open **Settings**, then **Appearance**.
 2. Under **Themes**, open the community theme browser and search for **Monolith**.
@@ -82,7 +82,18 @@ body { --mn-callout-k: 0; }
 
 ## Design notes
 
-[docs/design-notes.md](docs/design-notes.md) covers the full grey ladder, the contrast ratios, and the reasoning behind the accent.
+[docs/design-notes.md](docs/design-notes.md) covers the full grey ladder, the contrast ratios, the reasoning behind the accent and the callout colors, and which browser engines the theme was tested on.
+
+## Development
+
+Monolith is one stylesheet, `theme.css`. To check a change before a release:
+
+```bash
+npm install
+npm run check
+```
+
+`npm run check` runs Stylelint on `theme.css`, then checks that `manifest.json`, `versions.json`, the changelog, the Style Settings block, this README and the screenshot agree with each other. [docs/releasing.md](docs/releasing.md) lists the release steps, and [CHANGELOG.md](CHANGELOG.md) lists what changed in each version.
 
 ## Credits and license
 

@@ -14,6 +14,9 @@
 
    Accent: the theme follows Settings > Appearance > Accent color.
    Defaults are #8fc1ee (dark) and #2e5fa0 (light).
+
+   Needs Chromium 120 or newer (an up-to-date Obsidian installer): color-mix(),
+   oklch(), :dir() and CSS masks. See docs/design-notes.md, Compatibility.
    ========================================================================== */
 
 /* @settings
@@ -74,8 +77,8 @@ settings:
 
 /* ---- Dark (primary) ----------------------------------------------------
    Surfaces rise with lightness: frame < sidebar < page < row < key.
-   Text never reaches pure white except bold. Body text is #bbb on #0e0e0e,
-   about 10:1, which is well above the 4.5:1 WCAG AA floor but far from the
+   Text never reaches pure white except bold. Body text is #c2c2c2 on #0e0e0e,
+   about 11:1, which is well above the 4.5:1 WCAG AA floor but far from the
    21:1 of pure white on pure black. */
 .theme-dark {
   --accent-h: 208;
@@ -108,7 +111,7 @@ settings:
   --mn-body: #c2c2c2;
   --mn-quote: #a8a8a8;
   --mn-muted: #919191;
-  --mn-faint: #7c7c7c;
+  --mn-faint: #808080;
   --mn-on-accent: #050505;
   --mn-hover: rgb(255 255 255 / 6%);
   --mn-active: rgb(255 255 255 / 10%);
@@ -250,6 +253,7 @@ body {
   --mn-accent-k: 1;
   --mn-callout-k: 1;
   --mn-dir: 90deg;
+  --mn-mk: calc(var(--font-text-size) * 0.52);
 
   /* Square everything. */
   --radius-s: 0;
@@ -271,7 +275,10 @@ body {
   --metadata-border-radius: 0;
   --metadata-property-radius: 0;
 
-  /* Headings: size and weight step down together. Shade is in part 2. */
+  /* Headings: size and weight step down together. Shade is in part 2.
+     Only IBM Plex Mono Regular is embedded (section 5), so the mono weights of
+     500 below, here and in the table header and callout title, render as 400
+     until a Medium face is added. */
   --h1-size: 1.6em;
   --h2-size: 1.4em;
   --h3-size: 1.22em;
@@ -360,25 +367,34 @@ body {
 /* ---- Shared mapping, part 2: colors under .theme-dark and .theme-light -- */
 .theme-dark,
 .theme-light {
-  /* The accent, in doses. Every tint blends the accent into a grey in OKLCH,
-     as Obsidian recommends, and every percentage scales with --mn-accent-k,
-     the Accent strength slider in Style Settings. At 0 the theme is grey. */
-  --mn-accent-line: color-mix(in oklch, var(--color-accent) calc(60% * var(--mn-accent-k)), transparent);
-  --mn-accent-hi: color-mix(in oklch, var(--color-accent) calc(100% * var(--mn-accent-k)), transparent);
-  --mn-accent-glow: color-mix(in oklch, var(--color-accent) calc(35% * var(--mn-accent-k)), transparent);
+  /* The accent, in doses. Every tint blends the accent into a grey, and every
+     percentage scales with --mn-accent-k, the Accent strength slider in Style
+     Settings. At 0 the theme is grey.
+
+     Mixes run in OKLab, not OKLCH. OKLCH interpolates hue, and Chromium before
+     137 gave a grey a made-up hue, so the ice-blue tints came out purple and
+     green callouts came out olive. OKLab has no hue to get wrong, and on current
+     builds it gives the same colors at the default settings.
+
+     The sliders multiply a percentage by a plain number inside calc(). Every
+     Chromium that has color-mix() accepts that, so --mn-accent-k and
+     --mn-callout-k stay plain numbers from 0 to 1. */
+  --mn-accent-line: color-mix(in oklab, var(--color-accent) calc(60% * var(--mn-accent-k)), transparent);
+  --mn-accent-hi: color-mix(in oklab, var(--color-accent) calc(100% * var(--mn-accent-k)), transparent);
+  --mn-accent-glow: color-mix(in oklab, var(--color-accent) calc(35% * var(--mn-accent-k)), transparent);
   --mn-glow: 0 0 12px -2px var(--mn-accent-glow);
-  --mn-tint-line: color-mix(in oklch, var(--color-accent) calc(45% * var(--mn-accent-k)), var(--mn-line-hi));
-  --mn-tint-text: color-mix(in oklch, var(--color-accent) calc(50% * var(--mn-accent-k)), var(--mn-muted));
-  --mn-tint-edge: color-mix(in oklch, var(--color-accent) calc(22% * var(--mn-accent-k)), var(--mn-line-strong));
-  --mn-tint-wash: color-mix(in oklch, var(--color-accent) calc(5% * var(--mn-accent-k)), var(--mn-well));
+  --mn-tint-line: color-mix(in oklab, var(--color-accent) calc(45% * var(--mn-accent-k)), var(--mn-line-hi));
+  --mn-tint-text: color-mix(in oklab, var(--color-accent) calc(50% * var(--mn-accent-k)), var(--mn-muted));
+  --mn-tint-edge: color-mix(in oklab, var(--color-accent) calc(22% * var(--mn-accent-k)), var(--mn-line-strong));
+  --mn-tint-wash: color-mix(in oklab, var(--color-accent) calc(5% * var(--mn-accent-k)), var(--mn-well));
 
   /* Heading rules and markers. A cool cast on grey at rest, warmer on hover. */
-  --mn-rule-hi: color-mix(in oklch, var(--color-accent) calc(24% * var(--mn-accent-k)), var(--mn-line-strong));
-  --mn-rule-lo: color-mix(in oklch, var(--color-accent) calc(10% * var(--mn-accent-k)), var(--mn-line));
-  --mn-rule-hi-hover: color-mix(in oklch, var(--color-accent) calc(55% * var(--mn-accent-k)), var(--mn-line-strong));
-  --mn-rule-lo-hover: color-mix(in oklch, var(--color-accent) calc(24% * var(--mn-accent-k)), var(--mn-line));
-  --mn-mark: color-mix(in oklch, var(--color-accent) calc(58% * var(--mn-accent-k)), var(--mn-line-hi));
-  --mn-mark-hover: color-mix(in oklch, var(--color-accent) calc(100% * var(--mn-accent-k)), var(--mn-line-hi));
+  --mn-rule-hi: color-mix(in oklab, var(--color-accent) calc(24% * var(--mn-accent-k)), var(--mn-line-strong));
+  --mn-rule-lo: color-mix(in oklab, var(--color-accent) calc(10% * var(--mn-accent-k)), var(--mn-line));
+  --mn-rule-hi-hover: color-mix(in oklab, var(--color-accent) calc(55% * var(--mn-accent-k)), var(--mn-line-strong));
+  --mn-rule-lo-hover: color-mix(in oklab, var(--color-accent) calc(24% * var(--mn-accent-k)), var(--mn-line));
+  --mn-mark: color-mix(in oklab, var(--color-accent) calc(58% * var(--mn-accent-k)), var(--mn-line-hi));
+  --mn-mark-hover: color-mix(in oklab, var(--color-accent) calc(100% * var(--mn-accent-k)), var(--mn-line-hi));
 
   /* Corner brackets, the page's signature. Ten pixels of hairline per arm. */
   --mn-brk-top:
@@ -443,8 +459,8 @@ body {
   --text-muted: var(--mn-muted);
   --text-faint: var(--mn-faint);
   --text-on-accent: var(--mn-on-accent);
-  --text-selection: color-mix(in oklch, var(--color-accent) 30%, transparent);
-  --text-highlight-bg: color-mix(in oklch, var(--color-accent) 26%, transparent);
+  --text-selection: color-mix(in oklab, var(--color-accent) 30%, transparent);
+  --text-highlight-bg: color-mix(in oklab, var(--color-accent) 26%, transparent);
   --caret-color: var(--color-accent);
 
   /* Headings: one grey per level. */
@@ -536,7 +552,7 @@ body {
   --ribbon-background-collapsed: var(--mn-bg-0);
   --tab-container-background: var(--mn-bg-0);
   --tab-background-active: var(--mn-bg-1);
-  --tab-divider-color: color-mix(in oklch, var(--mn-line) 55%, transparent);
+  --tab-divider-color: color-mix(in oklab, var(--mn-line) 55%, transparent);
   --icon-color-hover: var(--mn-link);
   --icon-color-active: var(--color-accent);
   --tab-outline-color: var(--mn-line);
@@ -595,14 +611,6 @@ body.mn-flat {
    Obsidian's variables (section 1). The rules below add what variables
    cannot: tracking, rules, markers, underline color.
    ========================================================================== */
-
-body {
-  /* Arabic has no italic, and a skewed Arabic letter breaks the join.
-     Italic Arabic therefore stays upright and is told apart by its grey. */
-  font-synthesis: none;
-
-  --mn-mk: calc(var(--font-text-size) * 0.52);
-}
 
 /* ---- Headings: tracking ------------------------------------------------ */
 .markdown-rendered h1,
@@ -693,6 +701,17 @@ body {
 .markdown-rendered :is(p, li, td, th, blockquote):dir(rtl),
 .cm-line:dir(rtl) {
   line-height: 1.85;
+}
+
+/* Arabic has no italic, and a skewed Arabic letter breaks the join, so
+   right-to-left text never gets a synthesized italic or bold. Italic Arabic
+   stays upright and is told apart by its grey, below.
+   Only right-to-left text is switched off. Latin text keeps the browser's
+   normal fallback: code comments in IBM Plex Mono lean, and bold and italic
+   still show in a font you pick under Settings, Appearance that lacks them. */
+:is(.markdown-rendered, .markdown-source-view) :dir(rtl),
+.inline-title:dir(rtl) {
+  font-synthesis: none;
 }
 
 /* Arabic has no italic, so emphasis there is carried by shade alone.
@@ -948,11 +967,11 @@ mark,
      into the grey by the Callout color slider, as the accent tints do. */
   --mn-co-ink-hue: oklch(var(--mn-co-l) calc(var(--mn-co-c) * var(--mn-co-q)) var(--mn-co-h));
   --mn-co-edge-hue: oklch(var(--mn-co-edge-l) calc(var(--mn-co-edge-c) * var(--mn-co-q)) var(--mn-co-h));
-  --mn-co-ink: color-mix(in oklch, var(--mn-co-ink-hue) calc(100% * var(--mn-callout-k)), var(--mn-co-grey));
-  --mn-co-edge: color-mix(in oklch, var(--mn-co-edge-hue) calc(100% * var(--mn-callout-k)), var(--mn-co-edge-grey));
-  --mn-co-bar: color-mix(in oklch, var(--mn-co-edge-hue) calc(9% * var(--mn-callout-k)), var(--mn-bg-2));
-  --mn-co-glow: color-mix(in oklch, color-mix(in oklch, var(--mn-co-edge-hue) 35%, transparent) calc(100% * var(--mn-callout-k)), var(--mn-accent-glow));
-  --mn-co-hatch: color-mix(in oklch, var(--mn-co-edge-hue) calc(6% * var(--mn-callout-k)), var(--mn-hatch-line));
+  --mn-co-ink: color-mix(in oklab, var(--mn-co-ink-hue) calc(100% * var(--mn-callout-k)), var(--mn-co-grey));
+  --mn-co-edge: color-mix(in oklab, var(--mn-co-edge-hue) calc(100% * var(--mn-callout-k)), var(--mn-co-edge-grey));
+  --mn-co-bar: color-mix(in oklab, var(--mn-co-edge-hue) calc(9% * var(--mn-callout-k)), var(--mn-bg-2));
+  --mn-co-glow: color-mix(in oklab, color-mix(in oklab, var(--mn-co-edge-hue) 35%, transparent) calc(100% * var(--mn-callout-k)), var(--mn-accent-glow));
+  --mn-co-hatch: color-mix(in oklab, var(--mn-co-edge-hue) calc(6% * var(--mn-callout-k)), var(--mn-hatch-line));
 
   overflow: hidden;
   border: 1px solid var(--mn-line-strong);
@@ -1010,8 +1029,8 @@ mark,
 .callout[data-callout="important"] {
   --mn-co-grey: var(--mn-tint-text);
   --mn-co-edge-grey: var(--mn-tint-line);
-  --mn-co-ink-hue: color-mix(in oklch, var(--color-accent) calc(70% * var(--mn-accent-k)), var(--mn-h3));
-  --mn-co-edge-hue: color-mix(in oklch, var(--color-accent) calc(75% * var(--mn-accent-k)), var(--mn-line-hi));
+  --mn-co-ink-hue: color-mix(in oklab, var(--color-accent) calc(70% * var(--mn-accent-k)), var(--mn-h3));
+  --mn-co-edge-hue: color-mix(in oklab, var(--color-accent) calc(75% * var(--mn-accent-k)), var(--mn-line-hi));
 
   box-shadow: inset 0 0 24px -10px var(--mn-co-glow);
 }
